@@ -1,0 +1,1 @@
+alter table tb_collaborator add constraint UK_84a4y117bmi4j8a6mehietn2w unique (email)

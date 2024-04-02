@@ -1,0 +1,1 @@
+alter table tb_collaborator add constraint UK_g9px2oyifcv0ijlp9ytukfb5g unique (cpf)
