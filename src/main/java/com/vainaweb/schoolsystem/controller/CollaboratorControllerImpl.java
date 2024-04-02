@@ -1,10 +1,37 @@
 package com.vainaweb.schoolsystem.controller;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vainaweb.schoolsystem.dto.response.CollaboratorResponse;
+import com.vainaweb.schoolsystem.service.CollaboratorService;
+
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/colaboradores")
 class CollaboratorControllerImpl implements CollaboratorController {
+
+  private final CollaboratorService collaboratorService;
+
+  @Override
+  public ResponseEntity<List<CollaboratorResponse>> findAll() {
+    return ResponseEntity.ok().body(collaboratorService.findAll());
+  }
+
+  @Override
+  public ResponseEntity<CollaboratorResponse> findById(long id) {
+    return ResponseEntity.ok().body(collaboratorService.findById(id));
+  }
+
+  @Override
+  public ResponseEntity<Void> deleteById(long id) {
+    collaboratorService.delete(id);
+    return ResponseEntity.noContent().build();
+  }
   
 }
