@@ -1,5 +1,9 @@
 package com.vainaweb.schoolsystem.dto.request;
 
-public class AddressRequest {
-
-}
+public record AddressRequest(
+    String zip,
+    String street,
+    Short number,
+    String complement,
+    String city,
+    String state) {}

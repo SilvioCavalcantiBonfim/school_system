@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.entity;
+package com.vainaweb.schoolsystem.model.entity;
 
 public enum Role {
   INSTRUTOR, 

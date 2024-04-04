@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.entity;
+package com.vainaweb.schoolsystem.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -20,13 +20,15 @@ import lombok.Setter;
 @Builder
 public class Address {
 
-  @Pattern(regexp = "^\\d{5}-\\d{3}$")
+  @Pattern(regexp = "^\\d{5}-\\d{3}$", message = "must match #####-###")
+  @NotNull
   @Column(length = 9)
   private String zip;
 
   @NotBlank
   private String street;
 
+  @NotNull
   @PositiveOrZero
   private Short number;
 

@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.entity;
+package com.vainaweb.schoolsystem.model.entity;
 
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -34,9 +35,13 @@ public class Collaborator {
   private String name;
   
   @Email
+  @NotNull
+  @NotBlank
   @Column(unique = true)
   private String email;
   
+  @NotNull
+  @NotBlank
   @CPF
   @Column(unique = true, length = 14)
   private String cpf;
@@ -44,6 +49,7 @@ public class Collaborator {
   @NotNull
   private Role role;
   
+  @Valid
   @NotNull
   private Address address;
 }

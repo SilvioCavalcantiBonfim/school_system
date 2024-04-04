@@ -1,11 +1,14 @@
 package com.vainaweb.schoolsystem.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vainaweb.schoolsystem.dto.request.CollaboratorRequest;
 import com.vainaweb.schoolsystem.dto.response.CollaboratorResponse;
 import com.vainaweb.schoolsystem.service.CollaboratorService;
 
@@ -32,6 +35,12 @@ class CollaboratorControllerImpl implements CollaboratorController {
   public ResponseEntity<Void> deleteById(long id) {
     collaboratorService.delete(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @Override
+  public ResponseEntity<Void> create(CollaboratorRequest collaboratorRequest) throws URISyntaxException {
+    URI location = collaboratorService.create(collaboratorRequest);
+    return ResponseEntity.created(location).build();
   }
   
 }

@@ -1,5 +1,4 @@
 package com.vainaweb.schoolsystem.dto.request;
 
-public class CollaboratorRequest {
-
+public record CollaboratorRequest(String name, String email, String cpf, String role, AddressRequest address) {
 }
