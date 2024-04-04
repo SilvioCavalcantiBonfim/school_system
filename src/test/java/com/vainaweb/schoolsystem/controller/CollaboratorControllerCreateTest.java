@@ -64,6 +64,38 @@ public class CollaboratorControllerCreateTest {
         .andExpect(MockMvcResultMatchers.header().string("Location", "/colaboradores/3"));
   }
 
+  @Test
+  @DisplayName("Create Collaborator With Already Email")
+  public void createCollaboratorAlreadyEmail() throws Exception {
+
+    body.put("email", "joao.silva@example.com");
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.post("/colaboradores").contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(body)))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isBadRequest())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("email address already registered"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
+  }
+
+  @Test
+  @DisplayName("Create Collaborator With Already Cpf")
+  public void createCollaboratorAlreadyCpf() throws Exception {
+
+    body.put("cpf", "508.206.000-75");
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.post("/colaboradores").contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(body)))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isBadRequest())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("cpf already registered"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
+  }
+
   // --------------------------------- name ---------------------------------
   @Test
   @DisplayName("Create Collaborator with name null")
@@ -104,7 +136,7 @@ public class CollaboratorControllerCreateTest {
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.message.email").value("must not be null"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.message.email").value("must not be blank"))
         .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
   }
 
@@ -147,7 +179,7 @@ public class CollaboratorControllerCreateTest {
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.message.cpf").value("must not be null"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.message.cpf").value("must not be blank"))
         .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
   }
 

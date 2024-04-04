@@ -1,6 +1,7 @@
 package com.vainaweb.schoolsystem.model.mapper;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
@@ -21,25 +22,42 @@ public class AddressMapper implements Mapper<Address, AddressResponse, AddressRe
   }
 
   @Override
-  public Address toEntity(AddressRequest addressRequest) {
-    if (Objects.isNull(addressRequest)) {
+  public Address toEntity(AddressRequest request) {
+    if (Objects.isNull(request)) {
       return null;
     }
 
     AddressBuilder address = Address.builder()
-      .zip(addressRequest.zip())
-      .city(addressRequest.city())
-      .complement(addressRequest.complement())
-      .street(addressRequest.street())
-      .number(addressRequest.number());
+        .zip(request.zip())
+        .city(request.city())
+        .complement(request.complement())
+        .street(request.street())
+        .number(request.number());
 
-      if (Objects.nonNull(addressRequest.state())){
-        try {
-          address.state(State.valueOf(addressRequest.state().toUpperCase()));
-        } catch (Exception e) {
-          throw new IllegalStateStringException("the provided state is not valid.");
-        }
+    if (Objects.nonNull(request.state())) {
+      try {
+        address.state(State.valueOf(request.state().toUpperCase()));
+      } catch (Exception e) {
+        throw new IllegalStateStringException();
       }
+    }
     return address.build();
+  }
+
+  public Address merge(Address entity, AddressRequest request) {
+    Optional.ofNullable(request.zip()).ifPresent(entity::setZip);
+    Optional.ofNullable(request.street()).ifPresent(entity::setStreet);
+    Optional.ofNullable(request.city()).ifPresent(entity::setCity);
+    Optional.ofNullable(request.number()).ifPresent(entity::setNumber);
+    Optional.ofNullable(request.complement()).ifPresent(entity::setComplement);
+    Optional.ofNullable(request.state()).ifPresent(state -> {
+      try {
+        entity.setState(State.valueOf(state.toUpperCase()));
+      } catch (Exception e) {
+        throw new IllegalStateStringException();
+      }
+    });
+
+    return entity;
   }
 }

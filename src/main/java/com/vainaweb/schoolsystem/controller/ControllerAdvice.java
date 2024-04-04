@@ -3,6 +3,7 @@ package com.vainaweb.schoolsystem.controller;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -34,6 +35,9 @@ public interface ControllerAdvice {
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
   ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex);
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex);
 
   public record ErrorResponse(int status, String message, LocalDateTime timestamp) {
   }

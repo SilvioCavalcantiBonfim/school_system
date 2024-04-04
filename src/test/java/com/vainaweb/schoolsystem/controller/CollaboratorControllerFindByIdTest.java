@@ -34,7 +34,7 @@ public class CollaboratorControllerFindByIdTest {
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("João Silva")))
         .andExpect(MockMvcResultMatchers.jsonPath("$.email", Matchers.is("joao.silva@example.com")))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.cpf", Matchers.is("123.***.***-00")))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.cpf", Matchers.is("508.***.***-75")))
         .andExpect(MockMvcResultMatchers.jsonPath("$.role", Matchers.is("FACILITADOR")))
         .andExpect(MockMvcResultMatchers.jsonPath("$.address.zip", Matchers.is("12345-678")))
         .andExpect(MockMvcResultMatchers.jsonPath("$.address.street", Matchers.is("Rua das Flores")))

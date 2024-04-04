@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -24,6 +25,7 @@ import lombok.Setter;
 @Table(name = "tb_collaborator")
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Builder
 public class Collaborator {
 
@@ -35,12 +37,10 @@ public class Collaborator {
   private String name;
   
   @Email
-  @NotNull
   @NotBlank
   @Column(unique = true)
   private String email;
   
-  @NotNull
   @NotBlank
   @CPF
   @Column(unique = true, length = 14)
