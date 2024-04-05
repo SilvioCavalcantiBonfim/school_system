@@ -1,0 +1,1 @@
+alter table tb_collaborator add constraint c_6945c8f469874219bf361ba44f4d4c05 unique (cpf)

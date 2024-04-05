@@ -1,0 +1,1 @@
+alter table tb_collaborator add constraint c_263753c6b3ee49f885a925260962a563 unique (email)

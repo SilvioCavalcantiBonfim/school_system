@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.controller;
+package com.vainaweb.schoolsystem.controller.collaborator;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,0 +1,1 @@
+alter table tb_student add constraint c_94031c8a630040a88be42b818b527a45 unique (email)

@@ -24,7 +24,7 @@ public class CollaboratorMapper implements Mapper<Collaborator, CollaboratorResp
 
   @Override
   public CollaboratorResponse toResponse(Collaborator collaborator) {
-    return new CollaboratorResponse(collaborator.getName(), collaborator.getEmail(),
+    return new CollaboratorResponse(collaborator.getId(), collaborator.getName(), collaborator.getEmail(),
         cpfObfuscate(collaborator.getCpf()),
         collaborator.getRole().toString(), addressMapper.toResponse(collaborator.getAddress()));
   }

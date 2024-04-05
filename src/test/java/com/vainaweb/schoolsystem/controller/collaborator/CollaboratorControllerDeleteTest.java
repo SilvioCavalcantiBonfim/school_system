@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.controller;
+package com.vainaweb.schoolsystem.controller.collaborator;
 
 import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;

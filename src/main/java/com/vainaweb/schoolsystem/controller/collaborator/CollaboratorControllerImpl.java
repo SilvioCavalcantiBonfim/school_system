@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.controller;
+package com.vainaweb.schoolsystem.controller.collaborator;
 
 import java.net.URI;
 import java.net.URISyntaxException;

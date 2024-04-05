@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.controller;
+package com.vainaweb.schoolsystem.controller.advice;
 
 import java.time.LocalDateTime;
 import java.util.Map;

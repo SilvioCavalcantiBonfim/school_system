@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.controller;
+package com.vainaweb.schoolsystem.controller.student;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
@@ -11,32 +11,26 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-// import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureMockMvc
 @DirtiesContext
-public class CollaboratorControllerFindAllTest {
+public class StudentControllerFindAllTest {
 
   @Autowired
   private MockMvc mockMvc;
 
-  // @Autowired
-  // private ObjectMapper objectMapper;
-
-
-
   @Test
-  @SuppressWarnings("null")
-  @DisplayName("Find All Collaborator")
-  public void findAllCollaborator() throws Exception {
+  @DisplayName("Find All Students")
+  public void findAllStudents() throws Exception {
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/colaboradores/todos").contentType(MediaType.APPLICATION_JSON))
+    mockMvc.perform(MockMvcRequestBuilders.get("/estudantes/todos").contentType(MediaType.APPLICATION_JSON))
+        .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)));
+        .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(3)));
   }
 }

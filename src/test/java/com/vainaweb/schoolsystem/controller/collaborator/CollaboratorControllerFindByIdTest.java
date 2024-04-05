@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.controller;
+package com.vainaweb.schoolsystem.controller.collaborator;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
