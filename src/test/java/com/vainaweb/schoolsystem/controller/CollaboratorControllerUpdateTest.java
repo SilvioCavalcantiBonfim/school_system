@@ -3,13 +3,16 @@ package com.vainaweb.schoolsystem.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,9 +21,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 
 // import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,12 +37,20 @@ public class CollaboratorControllerUpdateTest {
   private ObjectMapper objectMapper;
 
   @Autowired
-  private EntityManager entityManager;
+  private JdbcTemplate jdbcTemplate;
+
+  @Autowired
+  private Flyway flyway;
 
   private Map<String, Object> body = new HashMap<>();
 
+  @BeforeEach
+  public void setup() {
+    jdbcTemplate.execute("DROP ALL OBJECTS DELETE FILES");
+    flyway.migrate();
+  }
+
   @Test
-  @SuppressWarnings("null")
   @DisplayName("Update Collaborator Not Found")
   public void updateCollaboratorNotFound() throws Exception {
 
@@ -55,7 +63,6 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @SuppressWarnings("null")
   @DisplayName("Update Collaborator Non Numeric Id")
   public void updateCollaboratorNonNumericId() throws Exception {
 
@@ -69,8 +76,6 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @Transactional
-  @SuppressWarnings("null")
   @DisplayName("Name Update Collaborator Success")
   public void nameUpdateCollaborator() throws Exception {
 
@@ -79,16 +84,28 @@ public class CollaboratorControllerUpdateTest {
     mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "a511fdab"))
+        .header("If-Match", "bcc6aae2"))
         .andExpect(MockMvcResultMatchers.status().isNoContent())
         .andExpect(MockMvcResultMatchers.header().string("ETag", Matchers.containsString("ff794c6")));
-
-    entityManager.flush();
-    entityManager.clear();
   }
 
   @Test
-  @SuppressWarnings("null")
+  @DisplayName("Name Update Collaborator If-Match non match")
+  public void nameUpdateCollaboratorNonMatch() throws Exception {
+
+    body.put("name", "João da Silva");
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(body))
+        .header("If-Match", "a511fdad"))
+        .andExpect(MockMvcResultMatchers.status().isBadRequest())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("the received ETag does not match the current ETag"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
+  }
+
+  @Test
   @DisplayName("Name Update Collaborator is blank")
   public void nameUpdateCollaboratorIsBlank() throws Exception {
 
@@ -97,7 +114,7 @@ public class CollaboratorControllerUpdateTest {
     mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "a511fdab"))
+        .header("If-Match", "bcc6aae2"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
         .andExpect(MockMvcResultMatchers.jsonPath("$.message.name").value("must not be blank"))
@@ -105,7 +122,6 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @SuppressWarnings("null")
   @DisplayName("Email Update Collaborator is blank")
   public void emailUpdateCollaboratorIsBlank() throws Exception {
 
@@ -114,7 +130,7 @@ public class CollaboratorControllerUpdateTest {
     mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "a511fdab"))
+        .header("If-Match", "bcc6aae2"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
         .andExpect(MockMvcResultMatchers.jsonPath("$.message.email").value("must not be blank"))
@@ -122,7 +138,22 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @SuppressWarnings("null")
+  @DisplayName("Email Update Collaborator is already")
+  public void emailUpdateCollaboratorIsAlready() throws Exception {
+
+    body.put("email", "joao.silva@example.com");
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(body))
+        .header("If-Match", "bcc6aae2"))
+        .andExpect(MockMvcResultMatchers.status().isBadRequest())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("email address already registered"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
+  }
+
+  @Test
   @DisplayName("Email Update Collaborator is invalid format")
   public void emailUpdateCollaboratorIsInvalidFormat() throws Exception {
 
@@ -131,7 +162,7 @@ public class CollaboratorControllerUpdateTest {
     mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "a511fdab"))
+        .header("If-Match", "bcc6aae2"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
         .andExpect(MockMvcResultMatchers.jsonPath("$.message.email").value("must be a well-formed email address"))
@@ -145,7 +176,7 @@ public class CollaboratorControllerUpdateTest {
     mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "a511fdab"))
+        .header("If-Match", "bcc6aae2"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
         .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("the provided role is not valid."))
@@ -220,7 +251,8 @@ public class CollaboratorControllerUpdateTest {
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("the HTTP request contains malformed syntax or cannot be understood by the server."))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.message")
+            .value("the HTTP request contains malformed syntax or cannot be understood by the server."))
         .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
   }
 
@@ -249,7 +281,7 @@ public class CollaboratorControllerUpdateTest {
     Map<String, Object> address = new HashMap<>();
     address.put("state", "teste");
     body.put("address", address);
-    
+
     mockMvc
         .perform(MockMvcRequestBuilders.put("/colaboradores/1").contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(body)))

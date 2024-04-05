@@ -24,7 +24,6 @@ public class CollaboratorControllerFindByIdTest {
   private MockMvc mockMvc;
 
   @Test
-  @SuppressWarnings("null")
   @DisplayName("Find By Id Collaborator Success")
   public void findAllCollaborator() throws Exception {
 
@@ -46,7 +45,6 @@ public class CollaboratorControllerFindByIdTest {
 
   
   @Test
-  @SuppressWarnings("null")
   @DisplayName("Find By Id Collaborator Not Found")
   public void findAllCollaboratorNotFound() throws Exception {
 
@@ -56,7 +54,6 @@ public class CollaboratorControllerFindByIdTest {
   }
 
   @Test
-  @SuppressWarnings("null")
   @DisplayName("Find By Id Collaborator Non Numeric Id")
   public void findAllCollaboratorNonNumericId() throws Exception {
 

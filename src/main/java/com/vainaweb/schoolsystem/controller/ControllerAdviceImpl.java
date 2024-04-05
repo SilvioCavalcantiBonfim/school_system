@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -83,16 +81,9 @@ public class ControllerAdviceImpl implements ControllerAdvice {
   }
 
   @Override
-  public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
-    String message = "";
-    if (ex.getMessage().contains("UK_84A4Y117BMI4J8A6MEHIETN2W")) {
-      message = "email address already registered";
-    }
-    if (ex.getMessage().contains("UK_G9PX2OYIFCV0IJLP9YTUKFB5G")) {
-      message = "cpf already registered";
-    }
+  public ResponseEntity<ErrorResponse> handleAlready(RuntimeException ex) {
     return ResponseEntity.badRequest()
-        .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), message, LocalDateTime.now()));
+        .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), LocalDateTime.now()));
   }
 
 }

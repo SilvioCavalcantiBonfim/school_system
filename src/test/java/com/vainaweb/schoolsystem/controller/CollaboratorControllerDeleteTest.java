@@ -1,21 +1,21 @@
 package com.vainaweb.schoolsystem.controller;
 
+import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
@@ -27,23 +27,26 @@ public class CollaboratorControllerDeleteTest {
   private MockMvc mockMvc;
 
   @Autowired
-  private EntityManager entityManager;
+  private JdbcTemplate jdbcTemplate;
+
+  @Autowired
+  private Flyway flyway;
+
+  @BeforeEach
+  public void setup() {
+    jdbcTemplate.execute("DROP ALL OBJECTS DELETE FILES");
+    flyway.migrate();
+  }
 
   @Test
-  @Transactional
-  @SuppressWarnings("null")
   @DisplayName("Delete Collaborator Success")
   public void deleteCollaborator() throws Exception {
 
     mockMvc.perform(MockMvcRequestBuilders.delete("/colaboradores/1").contentType(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.status().isNoContent());
-
-    entityManager.flush();
-    entityManager.clear();
   }
 
   @Test
-  @SuppressWarnings("null")
   @DisplayName("Delete Collaborator Not Found")
   public void DeleteCollaboratorNotFound() throws Exception {
 
@@ -53,7 +56,6 @@ public class CollaboratorControllerDeleteTest {
   }
 
   @Test
-  @SuppressWarnings("null")
   @DisplayName("delete Collaborator Non Numeric Id")
   public void deleteCollaboratorNonNumericId() throws Exception {
 

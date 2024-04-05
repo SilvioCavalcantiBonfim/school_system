@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.vainaweb.schoolsystem.model.entity.Collaborator;
 
 @Repository
-public interface CollaboratorRepository extends JpaRepository<Collaborator, Long> {}
+public interface CollaboratorRepository extends JpaRepository<Collaborator, Long> {
+  boolean existsByEmail(String email);
+  boolean existsByCpf(String cpf);
+}

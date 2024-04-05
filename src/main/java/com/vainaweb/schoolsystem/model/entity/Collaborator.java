@@ -47,7 +47,7 @@ public class Collaborator {
   private String cpf;
   
   @NotNull
-  private Role role;
+  private Role role; 
   
   @Valid
   @NotNull

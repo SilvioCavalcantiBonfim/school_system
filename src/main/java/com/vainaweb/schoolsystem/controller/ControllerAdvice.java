@@ -3,14 +3,16 @@ package com.vainaweb.schoolsystem.controller;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.vainaweb.schoolsystem.exception.AlreadyCpfException;
+import com.vainaweb.schoolsystem.exception.AlreadyEmailException;
 import com.vainaweb.schoolsystem.exception.CollaboratorNotFoundException;
+import com.vainaweb.schoolsystem.exception.ETagMismatchException;
 import com.vainaweb.schoolsystem.exception.IllegalRoleException;
 import com.vainaweb.schoolsystem.exception.IllegalStateStringException;
 
@@ -36,8 +38,8 @@ public interface ControllerAdvice {
   @ExceptionHandler(HttpMessageNotReadableException.class)
   ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex);
 
-  @ExceptionHandler(DataIntegrityViolationException.class)
-  ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex);
+  @ExceptionHandler({AlreadyEmailException.class, AlreadyCpfException.class, ETagMismatchException.class})
+  ResponseEntity<ErrorResponse> handleAlready(RuntimeException ex);
 
   public record ErrorResponse(int status, String message, LocalDateTime timestamp) {
   }
