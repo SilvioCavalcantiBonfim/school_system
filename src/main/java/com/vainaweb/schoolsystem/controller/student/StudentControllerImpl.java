@@ -22,5 +22,10 @@ public class StudentControllerImpl implements StudentController {
   public ResponseEntity<List<StudentResponse>> findAll() {
     return ResponseEntity.ok().body(studentService.findAll());
   }
+
+  @Override
+  public ResponseEntity<StudentResponse> findById(long id) {
+    return ResponseEntity.ok().body(studentService.findById(id));
+  }
   
 }

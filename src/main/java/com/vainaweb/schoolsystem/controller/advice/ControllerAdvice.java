@@ -15,13 +15,14 @@ import com.vainaweb.schoolsystem.exception.CollaboratorNotFoundException;
 import com.vainaweb.schoolsystem.exception.ETagMismatchException;
 import com.vainaweb.schoolsystem.exception.IllegalRoleException;
 import com.vainaweb.schoolsystem.exception.IllegalStateStringException;
+import com.vainaweb.schoolsystem.exception.StudentNotFoundException;
 
 import jakarta.validation.ConstraintViolationException;
 
 public interface ControllerAdvice {
 
-  @ExceptionHandler(CollaboratorNotFoundException.class)
-  ResponseEntity<ErrorResponse> handleCollaboratorNotFound(CollaboratorNotFoundException ex);
+  @ExceptionHandler({CollaboratorNotFoundException.class, StudentNotFoundException.class})
+  ResponseEntity<ErrorResponse> handleNotFound(RuntimeException ex);
 
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex);

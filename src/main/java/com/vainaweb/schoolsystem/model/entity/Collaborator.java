@@ -41,7 +41,7 @@ public class Collaborator {
   @Column(unique = true)
   private String email;
   
-  @NotBlank
+  @NotNull
   @CPF
   @Column(unique = true, length = 14)
   private String cpf;

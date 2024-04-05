@@ -12,14 +12,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.vainaweb.schoolsystem.exception.CollaboratorNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 
 @org.springframework.web.bind.annotation.ControllerAdvice
 public class ControllerAdviceImpl implements ControllerAdvice {
 
   @Override
-  public ResponseEntity<ErrorResponse> handleCollaboratorNotFound(CollaboratorNotFoundException ex) {
+  public ResponseEntity<ErrorResponse> handleNotFound(RuntimeException ex) {
     return ResponseEntity.notFound().build();
   }
 

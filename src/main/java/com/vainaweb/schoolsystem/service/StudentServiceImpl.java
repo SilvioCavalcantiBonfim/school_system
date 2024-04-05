@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.vainaweb.schoolsystem.dto.response.StudentResponse;
+import com.vainaweb.schoolsystem.exception.StudentNotFoundException;
 import com.vainaweb.schoolsystem.model.mapper.StudentMapper;
 import com.vainaweb.schoolsystem.repository.StudentRepository;
 
@@ -20,6 +21,11 @@ public class StudentServiceImpl implements StudentService {
   @Override
   public List<StudentResponse> findAll() {
     return studantRepository.findAll().stream().map(studentMapper::toResponse).toList();
+  }
+
+  @Override
+  public StudentResponse findById(long id) {
+    return studantRepository.findById(id).map(studentMapper::toResponse).orElseThrow(() -> new StudentNotFoundException());
   }
   
 }

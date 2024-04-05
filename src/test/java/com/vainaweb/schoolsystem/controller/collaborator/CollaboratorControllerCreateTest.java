@@ -193,7 +193,7 @@ public class CollaboratorControllerCreateTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message.cpf").value("must not be blank"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message.cpf").value("must not be null"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
     }
 
@@ -207,7 +207,7 @@ public class CollaboratorControllerCreateTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message.cpf").value("must not be blank"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message.cpf").value("invalid Brazilian individual taxpayer registry number (CPF)"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
     }
 

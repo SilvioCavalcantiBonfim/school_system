@@ -21,6 +21,7 @@ public class StudentMapper implements Mapper<Student, StudentResponse, StudentRe
   public StudentResponse toResponse(Student student) {
     return new StudentResponse(student.getId(), student.getName(), student.getEmail(),
         cpfObfuscate(student.getCpf()),
+        student.getPhone(),
         student.getCourse().toString(), 
         addressMapper.toResponse(student.getAddress()));
   }
