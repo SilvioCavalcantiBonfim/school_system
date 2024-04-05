@@ -1,5 +1,6 @@
 package com.vainaweb.schoolsystem.controller.collaborator;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -8,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.vainaweb.schoolsystem.dto.request.CollaboratorRequest;
 import com.vainaweb.schoolsystem.dto.request.CollaboratorUpdateRequest;
 import com.vainaweb.schoolsystem.dto.response.CollaboratorResponse;
@@ -46,7 +46,7 @@ class CollaboratorControllerImpl implements CollaboratorController {
   }
 
   @Override
-  public ResponseEntity<Void> update(long id, CollaboratorUpdateRequest collaboratorRequest, String ifMatch) throws JsonProcessingException {
+  public ResponseEntity<Void> update(long id, CollaboratorUpdateRequest collaboratorRequest, String ifMatch) throws IOException {
     String etag = collaboratorService.update(id, collaboratorRequest, ifMatch);
     return ResponseEntity.noContent().eTag(etag).build();
   }

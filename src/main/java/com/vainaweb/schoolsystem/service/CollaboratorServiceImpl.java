@@ -1,17 +1,14 @@
 package com.vainaweb.schoolsystem.service;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.zip.CRC32;
-
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vainaweb.schoolsystem.dto.request.CollaboratorRequest;
 import com.vainaweb.schoolsystem.dto.request.CollaboratorUpdateRequest;
 import com.vainaweb.schoolsystem.dto.response.CollaboratorResponse;
@@ -36,8 +33,7 @@ public class CollaboratorServiceImpl implements CollaboratorService {
 
   private final CollaboratorRepository collaboratorRepository;
   private final CollaboratorMapper collaboratorMapper;
-  private final ObjectMapper objectMapper;
-  private final CRC32 crc32;
+  private final ETagService eTagService;
 
   @Override
   public List<CollaboratorResponse> findAll() {
@@ -77,7 +73,7 @@ public class CollaboratorServiceImpl implements CollaboratorService {
 
   @Override
   public String update(long id, CollaboratorUpdateRequest collaboratorRequest, String ifMatch)
-      throws JsonProcessingException {
+      throws IOException {
     checkEmailAlreadyExists(collaboratorRequest.email());
     Collaborator collaborator = findCollaboratorById(id);
     validateETag(ifMatch, collaborator);
@@ -100,19 +96,18 @@ public class CollaboratorServiceImpl implements CollaboratorService {
         .orElseThrow(() -> new CollaboratorNotFoundException());
   }
 
-  private void validateETag(String ifMatch, Collaborator collaborator) throws JsonProcessingException {
+  private void validateETag(String ifMatch, Collaborator collaborator) throws IOException {
     if (Objects.nonNull(ifMatch)) {
       String etag = generateEtag(collaborator);
+      System.out.println(etag);
       if (!etag.equals(ifMatch)) {
         throw new ETagMismatchException();
       }
     }
   }
 
-  private String generateEtag(Collaborator collaborator) throws JsonProcessingException {
-    crc32.reset();
-    crc32.update(objectMapper.writeValueAsString(collaborator).getBytes());
-    return String.format("%x", crc32.getValue());
+  private String generateEtag(Collaborator collaborator) throws IOException {
+    return String.format("%x", eTagService.generate(collaborator));
   }
 
   private Collaborator mergeCollaboratorData(CollaboratorUpdateRequest collaboratorRequest, Collaborator collaborator) {

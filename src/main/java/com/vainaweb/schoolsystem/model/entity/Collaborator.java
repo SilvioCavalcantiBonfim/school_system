@@ -1,5 +1,7 @@
 package com.vainaweb.schoolsystem.model.entity;
 
+import java.io.Serializable;
+
 import org.hibernate.validator.constraints.br.CPF;
 
 import jakarta.persistence.Column;
@@ -27,7 +29,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Builder
-public class Collaborator {
+public class Collaborator implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,7 @@
 package com.vainaweb.schoolsystem.model.entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
@@ -20,7 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 @ToString
-public class Address {
+public class Address implements Serializable {
 
   @Pattern(regexp = "^\\d{5}-\\d{3}$", message = "must match #####-###")
   @NotNull

@@ -1,5 +1,6 @@
 package com.vainaweb.schoolsystem.controller.collaborator;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -12,14 +13,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.vainaweb.schoolsystem.dto.request.CollaboratorRequest;
 import com.vainaweb.schoolsystem.dto.request.CollaboratorUpdateRequest;
 import com.vainaweb.schoolsystem.dto.response.CollaboratorResponse;
 
 public interface CollaboratorController {
 
-  @GetMapping("/todos")
+  @GetMapping
   ResponseEntity<List<CollaboratorResponse>> findAll();
 
   @GetMapping("/{id}")
@@ -33,5 +33,5 @@ public interface CollaboratorController {
 
   @PutMapping("/{id}")
   ResponseEntity<Void> update(@PathVariable final long id, @RequestBody final CollaboratorUpdateRequest collaboratorRequest,
-      @RequestHeader(name = "If-Match", required = false) final String ifMatch) throws JsonProcessingException;
+      @RequestHeader(name = "If-Match", required = false) final String ifMatch) throws IOException;
 }

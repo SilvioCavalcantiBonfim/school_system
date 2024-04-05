@@ -13,8 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-// import com.fasterxml.jackson.databind.ObjectMapper;
-
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureMockMvc
@@ -24,16 +22,12 @@ public class CollaboratorControllerFindAllTest {
   @Autowired
   private MockMvc mockMvc;
 
-  // @Autowired
-  // private ObjectMapper objectMapper;
-
-
 
   @Test
   @DisplayName("Find All Collaborator")
   public void findAllCollaborator() throws Exception {
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/colaboradores/todos").contentType(MediaType.APPLICATION_JSON))
+    mockMvc.perform(MockMvcRequestBuilders.get("/colaboradores").contentType(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)));
