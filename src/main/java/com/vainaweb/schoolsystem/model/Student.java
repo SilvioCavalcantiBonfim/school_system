@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.model.entity;
+package com.vainaweb.schoolsystem.model;
 
 import java.io.Serializable;
 
@@ -44,7 +44,7 @@ public class Student implements Serializable {
   @Column(unique = true)
   private String email;
 
-  @NotBlank
+  @NotNull
   @CPF
   @Column(unique = true, length = 14)
   private String cpf;

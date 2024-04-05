@@ -1,5 +1,8 @@
 package com.vainaweb.schoolsystem.dto.response;
 
+import lombok.Builder;
+
+@Builder
 public record AddressResponse(
   String zip, 
   String street, 

@@ -13,6 +13,7 @@ import com.vainaweb.schoolsystem.exception.AlreadyCpfException;
 import com.vainaweb.schoolsystem.exception.AlreadyEmailException;
 import com.vainaweb.schoolsystem.exception.CollaboratorNotFoundException;
 import com.vainaweb.schoolsystem.exception.ETagMismatchException;
+import com.vainaweb.schoolsystem.exception.IllegalCourseException;
 import com.vainaweb.schoolsystem.exception.IllegalRoleException;
 import com.vainaweb.schoolsystem.exception.IllegalStateStringException;
 import com.vainaweb.schoolsystem.exception.StudentNotFoundException;
@@ -33,8 +34,8 @@ public interface ControllerAdvice {
   @ExceptionHandler(ConstraintViolationException.class)
   ResponseEntity<MultErrorResponse> handleConstraintViolation(ConstraintViolationException ex);
 
-  @ExceptionHandler({IllegalRoleException.class, IllegalStateStringException.class})
-  ResponseEntity<ErrorResponse> handleIllegalRole(RuntimeException ex);
+  @ExceptionHandler({IllegalRoleException.class, IllegalStateStringException.class, IllegalCourseException.class})
+  ResponseEntity<ErrorResponse> handleIllegalEnum(RuntimeException ex);
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
   ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex);

@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.model.mapper;
+package com.vainaweb.schoolsystem.component.mapper;
 
 interface Mapper<E, R, Q> {
   E toEntity(Q request);

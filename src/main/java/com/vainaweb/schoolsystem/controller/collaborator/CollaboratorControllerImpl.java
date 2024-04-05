@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vainaweb.schoolsystem.dto.request.CollaboratorRequest;
 import com.vainaweb.schoolsystem.dto.request.CollaboratorUpdateRequest;
 import com.vainaweb.schoolsystem.dto.response.CollaboratorResponse;
-import com.vainaweb.schoolsystem.service.CollaboratorService;
+import com.vainaweb.schoolsystem.service.collaborator.CollaboratorService;
 
 import lombok.RequiredArgsConstructor;
 

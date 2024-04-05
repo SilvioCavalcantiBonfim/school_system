@@ -66,7 +66,7 @@ public class ControllerAdviceImpl implements ControllerAdvice {
   }
 
   @Override
-  public ResponseEntity<ErrorResponse> handleIllegalRole(RuntimeException ex) {
+  public ResponseEntity<ErrorResponse> handleIllegalEnum(RuntimeException ex) {
     return ResponseEntity.badRequest()
         .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), LocalDateTime.now()));
   }

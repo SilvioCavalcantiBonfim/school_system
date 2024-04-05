@@ -27,7 +27,7 @@ public class StudentControllerFindAllTest {
   @DisplayName("Find All Students")
   public void findAllStudents() throws Exception {
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/estudantes/todos").contentType(MediaType.APPLICATION_JSON))
+    mockMvc.perform(MockMvcRequestBuilders.get("/estudantes").contentType(MediaType.APPLICATION_JSON))
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))

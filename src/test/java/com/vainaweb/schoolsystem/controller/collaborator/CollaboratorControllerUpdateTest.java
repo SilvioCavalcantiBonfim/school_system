@@ -82,9 +82,9 @@ public class CollaboratorControllerUpdateTest {
     mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "52c8ec42"))
+        .header("If-Match", "32d3fc1c"))
         .andExpect(MockMvcResultMatchers.status().isNoContent())
-        .andExpect(MockMvcResultMatchers.header().string("ETag", Matchers.containsString("b9c8df29")));
+        .andExpect(MockMvcResultMatchers.header().string("ETag", Matchers.containsString("8258f27b")));
   }
 
   @Test
@@ -112,7 +112,7 @@ public class CollaboratorControllerUpdateTest {
     mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "52c8ec42"))
+        .header("If-Match", "32d3fc1c"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
         .andExpect(MockMvcResultMatchers.jsonPath("$.message.name").value("must not be blank"))
@@ -128,7 +128,7 @@ public class CollaboratorControllerUpdateTest {
     mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "52c8ec42"))
+        .header("If-Match", "32d3fc1c"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
         .andExpect(MockMvcResultMatchers.jsonPath("$.message.email").value("must not be blank"))
@@ -144,7 +144,7 @@ public class CollaboratorControllerUpdateTest {
     mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "52c8ec42"))
+        .header("If-Match", "32d3fc1c"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
         .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("email address already registered"))
@@ -160,7 +160,7 @@ public class CollaboratorControllerUpdateTest {
     mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "52c8ec42"))
+        .header("If-Match", "32d3fc1c"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
         .andExpect(MockMvcResultMatchers.jsonPath("$.message.email").value("must be a well-formed email address"))
@@ -174,7 +174,7 @@ public class CollaboratorControllerUpdateTest {
     mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "52c8ec42"))
+        .header("If-Match", "32d3fc1c"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
         .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("the provided role is not valid."))

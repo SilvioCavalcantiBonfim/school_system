@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.model.mapper;
+package com.vainaweb.schoolsystem.component.mapper;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -8,17 +8,23 @@ import org.springframework.stereotype.Component;
 import com.vainaweb.schoolsystem.dto.request.AddressRequest;
 import com.vainaweb.schoolsystem.dto.response.AddressResponse;
 import com.vainaweb.schoolsystem.exception.IllegalStateStringException;
-import com.vainaweb.schoolsystem.model.entity.Address;
-import com.vainaweb.schoolsystem.model.entity.Address.AddressBuilder;
-import com.vainaweb.schoolsystem.model.entity.State;
+import com.vainaweb.schoolsystem.model.Address;
+import com.vainaweb.schoolsystem.model.State;
+import com.vainaweb.schoolsystem.model.Address.AddressBuilder;
 
 @Component
 public class AddressMapper implements Mapper<Address, AddressResponse, AddressRequest> {
 
   @Override
   public AddressResponse toResponse(Address address) {
-    return new AddressResponse(address.getZip(), address.getStreet(), address.getNumber(), address.getComplement(),
-        address.getCity(), address.getState().toString());
+    return AddressResponse.builder()
+      .zip(address.getZip())
+      .street(address.getStreet())
+      .number(address.getNumber())
+      .complement(address.getComplement())
+      .city(address.getCity())
+      .state(address.getState().toString())
+      .build();
   }
 
   @Override

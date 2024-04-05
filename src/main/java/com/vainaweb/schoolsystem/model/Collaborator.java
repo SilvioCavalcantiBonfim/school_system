@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.model.entity;
+package com.vainaweb.schoolsystem.model;
 
 import java.io.Serializable;
 

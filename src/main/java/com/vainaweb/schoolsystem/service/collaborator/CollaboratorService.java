@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.service;
+package com.vainaweb.schoolsystem.service.collaborator;
 
 import java.io.IOException;
 import java.net.URI;

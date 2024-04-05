@@ -1,19 +1,18 @@
-package com.vainaweb.schoolsystem.model.mapper;
+package com.vainaweb.schoolsystem.component.mapper;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.springframework.stereotype.Component;
 
 import com.vainaweb.schoolsystem.dto.request.CollaboratorRequest;
 import com.vainaweb.schoolsystem.dto.request.CollaboratorUpdateRequest;
 import com.vainaweb.schoolsystem.dto.response.CollaboratorResponse;
 import com.vainaweb.schoolsystem.exception.IllegalRoleException;
-import com.vainaweb.schoolsystem.model.entity.Collaborator;
-import com.vainaweb.schoolsystem.model.entity.Collaborator.CollaboratorBuilder;
-import com.vainaweb.schoolsystem.model.entity.Role;
+import com.vainaweb.schoolsystem.model.Collaborator;
+import com.vainaweb.schoolsystem.model.Role;
+import com.vainaweb.schoolsystem.model.Collaborator.CollaboratorBuilder;
+import com.vainaweb.schoolsystem.service.obfuscator.ObfuscatorService;
+
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -21,12 +20,18 @@ import lombok.RequiredArgsConstructor;
 public class CollaboratorMapper implements Mapper<Collaborator, CollaboratorResponse, CollaboratorRequest> {
 
   private final AddressMapper addressMapper;
+  private final ObfuscatorService obfuscatorService;
 
   @Override
   public CollaboratorResponse toResponse(Collaborator collaborator) {
-    return new CollaboratorResponse(collaborator.getId(), collaborator.getName(), collaborator.getEmail(),
-        cpfObfuscate(collaborator.getCpf()),
-        collaborator.getRole().toString(), addressMapper.toResponse(collaborator.getAddress()));
+    return CollaboratorResponse.builder()
+        .id(collaborator.getId())
+        .name(collaborator.getName())
+        .email(collaborator.getEmail())
+        .cpf(obfuscatorService.obfuscateCpf(collaborator.getCpf()))
+        .role(collaborator.getRole().toString())
+        .address(addressMapper.toResponse(collaborator.getAddress()))
+        .build();
   }
 
   @Override
@@ -46,13 +51,6 @@ public class CollaboratorMapper implements Mapper<Collaborator, CollaboratorResp
     }
 
     return collaborator.build();
-  }
-
-  private String cpfObfuscate(String cpf) {
-    Pattern pattern = Pattern.compile("(\\d{3})\\.(\\d{3})\\.(\\d{3})-(\\d{2})");
-    Matcher matcher = pattern.matcher(cpf);
-
-    return matcher.replaceAll("$1.***.***-$4");
   }
 
   public Collaborator merge(Collaborator entity, CollaboratorUpdateRequest request) {
