@@ -27,5 +27,11 @@ public class StudentControllerImpl implements StudentController {
   public ResponseEntity<StudentResponse> findById(long id) {
     return ResponseEntity.ok().body(studentService.findById(id));
   }
+
+  @Override
+  public ResponseEntity<Void> deleteById(long id) {
+    studentService.delete(id);
+    return ResponseEntity.noContent().build();
+  }
   
 }

@@ -27,5 +27,11 @@ public class StudentServiceImpl implements StudentService {
   public StudentResponse findById(long id) {
     return studantRepository.findById(id).map(studentMapper::toResponse).orElseThrow(() -> new StudentNotFoundException());
   }
+
+  @Override
+  public void delete(long id) {
+    studantRepository.findById(id).orElseThrow(() -> new StudentNotFoundException());
+    studantRepository.deleteById(id);
+  }
   
 }
