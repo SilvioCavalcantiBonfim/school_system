@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.controller.student;
+package com.vainaweb.schoolsystem.integration.student;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureMockMvc
 @DirtiesContext
-public class StudentControllerCreateTest {
+public class StudentCreateTest {
 
         @Autowired
         private MockMvc mockMvc;
@@ -290,6 +290,7 @@ public class StudentControllerCreateTest {
                                 .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
         }
 
+        // --------------------------------- phone ---------------------------------
         @Test
         @DisplayName("Create Student with phone null")
         public void createStudentWithPhoneNull() throws Exception {

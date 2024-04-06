@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.controller.student;
+package com.vainaweb.schoolsystem.integration.student;
 
 import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;
@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureMockMvc
 @DirtiesContext
-public class StudentControllerDeleteTest {
+public class StudentDeleteTest {
 
   @Autowired
   private MockMvc mockMvc;

@@ -55,14 +55,13 @@ class CollaboratorServiceImpl implements CollaboratorService {
   }
 
   @Override
-  public String update(long id, CollaboratorUpdateRequest collaboratorRequest, String ifMatch)
+  public String update(long id, CollaboratorUpdateRequest request, String ifMatch)
       throws IOException {
-    collaboratorChecked.checkEmailAlreadyExists(collaboratorRequest.email());
+    collaboratorChecked.checkEmailAlreadyExists(request.email());
     Collaborator collaborator = findCollaboratorById(id);
     eTagService.validate(ifMatch, collaborator);
-    Collaborator collaboratorMerged = mergeCollaboratorData(collaboratorRequest, collaborator);
-    Collaborator collaboratorUpdated = saveCollaborator(collaboratorMerged);
-    return eTagService.generate(collaboratorUpdated);
+    collaborator = saveCollaborator(mergeCollaboratorData(request, collaborator));
+    return eTagService.generate(collaborator);
   }
 
   private Collaborator findCollaboratorById(long id) {

@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.controller.collaborator;
+package com.vainaweb.schoolsystem.integration.collaborator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureMockMvc
 @DirtiesContext
-public class CollaboratorControllerCreateTest {
+public class CollaboratorCreateTest {
 
     @Autowired
     private MockMvc mockMvc;

@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.controller.collaborator;
+package com.vainaweb.schoolsystem.integration.student;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureMockMvc
 @DirtiesContext
-public class CollaboratorControllerUpdateTest {
+public class StudentUpdateTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -49,11 +49,11 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @DisplayName("Update Collaborator Not Found")
-  public void updateCollaboratorNotFound() throws Exception {
+  @DisplayName("Update Student Not Found")
+  public void updateStudentNotFound() throws Exception {
 
     mockMvc
-        .perform(MockMvcRequestBuilders.put("/colaboradores/3")
+        .perform(MockMvcRequestBuilders.put("/estudantes/4")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(body)))
         .andDo(MockMvcResultHandlers.print())
@@ -61,10 +61,10 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @DisplayName("Update Collaborator Non Numeric Id")
-  public void updateCollaboratorNonNumericId() throws Exception {
+  @DisplayName("Update Student Non Numeric Id")
+  public void updateStudentNonNumericId() throws Exception {
 
-    mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/a")
+    mockMvc.perform(MockMvcRequestBuilders.put("/estudantes/a")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body)))
         .andDo(MockMvcResultHandlers.print())
@@ -74,45 +74,46 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @DisplayName("Name Update Collaborator Success")
-  public void nameUpdateCollaborator() throws Exception {
+  @DisplayName("Name Update Student Success")
+  public void nameUpdateStudent() throws Exception {
 
     body.put("name", "João da Silva");
 
-    mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
+    mockMvc.perform(MockMvcRequestBuilders.put("/estudantes/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "32d3fc1c"))
+        .header("If-Match", "adc41273"))
         .andExpect(MockMvcResultMatchers.status().isNoContent())
-        .andExpect(MockMvcResultMatchers.header().string("ETag", Matchers.containsString("8258f27b")));
+        .andExpect(MockMvcResultMatchers.header().string("ETag", Matchers.containsString("d617296b")));
   }
 
   @Test
-  @DisplayName("Name Update Collaborator If-Match non match")
-  public void nameUpdateCollaboratorNonMatch() throws Exception {
+  @DisplayName("Name Update Student If-Match non match")
+  public void nameUpdateStudentNonMatch() throws Exception {
 
     body.put("name", "João da Silva");
 
-    mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
+    mockMvc.perform(MockMvcRequestBuilders.put("/estudantes/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "a511fdad"))
+        .header("If-Match", "a"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("the received ETag does not match the current ETag"))
+        .andExpect(
+            MockMvcResultMatchers.jsonPath("$.message").value("the received ETag does not match the current ETag"))
         .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
   }
 
   @Test
-  @DisplayName("Name Update Collaborator is blank")
-  public void nameUpdateCollaboratorIsBlank() throws Exception {
+  @DisplayName("Name Update Student is blank")
+  public void nameUpdateStudentIsBlank() throws Exception {
 
     body.put("name", "");
 
-    mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
+    mockMvc.perform(MockMvcRequestBuilders.put("/estudantes/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "32d3fc1c"))
+        .header("If-Match", "adc41273"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
         .andExpect(MockMvcResultMatchers.jsonPath("$.message.name").value("must not be blank"))
@@ -120,77 +121,46 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @DisplayName("Email Update Collaborator is blank")
-  public void emailUpdateCollaboratorIsBlank() throws Exception {
-
-    body.put("email", "");
-
-    mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
+  @DisplayName("update Student with course is invalid")
+  public void updateStudentWithCourseBlank() throws Exception {
+    body.put("course", "");
+    mockMvc.perform(MockMvcRequestBuilders.put("/estudantes/1")
         .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "32d3fc1c"))
+        .content(objectMapper.writeValueAsString(body)))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.message.email").value("must not be blank"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("the provided course is not valid."))
         .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
   }
 
   @Test
-  @DisplayName("Email Update Collaborator is already")
-  public void emailUpdateCollaboratorIsAlready() throws Exception {
+  @DisplayName("update Student with phone invalid format")
+  public void updateStudentWithPhoneInvalidFormat() throws Exception {
 
-    body.put("email", "joao.silva@example.com");
+    body.put("phone", "teste");
 
-    mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
+    mockMvc.perform(MockMvcRequestBuilders.put("/estudantes/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "32d3fc1c"))
+        .header("If-Match", "adc41273"))
+        .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("email address already registered"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.message.phone")
+            .value("must match (##) 9####-#### or (##) ####-####"))
         .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
   }
 
   @Test
-  @DisplayName("Email Update Collaborator is invalid format")
-  public void emailUpdateCollaboratorIsInvalidFormat() throws Exception {
-
-    body.put("email", "teste");
-
-    mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "32d3fc1c"))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.message.email").value("must be a well-formed email address"))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
-  }
-
-  @Test
-  @DisplayName("Create Collaborator with role is invalid")
-  public void createCollaboratorWithRoleBlank() throws Exception {
-    body.put("role", "");
-    mockMvc.perform(MockMvcRequestBuilders.put("/colaboradores/1")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(body))
-        .header("If-Match", "32d3fc1c"))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("the provided role is not valid."))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
-  }
-
-  @Test
-  @DisplayName("Create Collaborator with zip invalid format")
-  public void createCollaboratorWithZipInvalidFormat() throws Exception {
+  @DisplayName("update Student with zip invalid format")
+  public void updateStudentWithZipInvalidFormat() throws Exception {
 
     Map<String, Object> address = new HashMap<>();
     address.put("zip", "teste");
     body.put("address", address);
 
     mockMvc
-        .perform(MockMvcRequestBuilders.put("/colaboradores/1").contentType(MediaType.APPLICATION_JSON)
+        .perform(MockMvcRequestBuilders.put("/estudantes/1").contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(body)))
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -200,15 +170,15 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @DisplayName("Update Collaborator with street invalid format")
-  public void updateCollaboratorWithStreetInvalidFormat() throws Exception {
+  @DisplayName("Update Student with street invalid format")
+  public void updateStudentWithStreetInvalidFormat() throws Exception {
 
     Map<String, Object> address = new HashMap<>();
     address.put("street", "");
     body.put("address", address);
 
     mockMvc
-        .perform(MockMvcRequestBuilders.put("/colaboradores/1").contentType(MediaType.APPLICATION_JSON)
+        .perform(MockMvcRequestBuilders.put("/estudantes/1").contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(body)))
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -218,15 +188,15 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @DisplayName("Update Collaborator with number invalid")
-  public void updateCollaboratorWithNumberInvalid() throws Exception {
+  @DisplayName("Update Student with number invalid")
+  public void updateStudentWithNumberInvalid() throws Exception {
 
     Map<String, Object> address = new HashMap<>();
     address.put("number", -1);
     body.put("address", address);
 
     mockMvc
-        .perform(MockMvcRequestBuilders.put("/colaboradores/1").contentType(MediaType.APPLICATION_JSON)
+        .perform(MockMvcRequestBuilders.put("/estudantes/1").contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(body)))
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -236,15 +206,15 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @DisplayName("Update Collaborator with number is non number")
-  public void updateCollaboratorWithNumberNonNumber() throws Exception {
+  @DisplayName("Update Student with number is non number")
+  public void updateStudentWithNumberNonNumber() throws Exception {
 
     Map<String, Object> address = new HashMap<>();
     address.put("number", "a");
     body.put("address", address);
 
     mockMvc
-        .perform(MockMvcRequestBuilders.put("/colaboradores/1").contentType(MediaType.APPLICATION_JSON)
+        .perform(MockMvcRequestBuilders.put("/estudantes/1").contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(body)))
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -255,15 +225,15 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @DisplayName("Update Collaborator with city is blank")
-  public void updateCollaboratorWithCityBlank() throws Exception {
+  @DisplayName("Update Student with city is blank")
+  public void updateStudentWithCityBlank() throws Exception {
 
     Map<String, Object> address = new HashMap<>();
     address.put("city", "");
     body.put("address", address);
 
     mockMvc
-        .perform(MockMvcRequestBuilders.put("/colaboradores/1").contentType(MediaType.APPLICATION_JSON)
+        .perform(MockMvcRequestBuilders.put("/estudantes/1").contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(body)))
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -273,15 +243,15 @@ public class CollaboratorControllerUpdateTest {
   }
 
   @Test
-  @DisplayName("update Collaborator with state city is invalid")
-  public void updateCollaboratorWithStateInvalid() throws Exception {
+  @DisplayName("update Student with state city is invalid")
+  public void updateStudentWithStateInvalid() throws Exception {
 
     Map<String, Object> address = new HashMap<>();
     address.put("state", "teste");
     body.put("address", address);
 
     mockMvc
-        .perform(MockMvcRequestBuilders.put("/colaboradores/1").contentType(MediaType.APPLICATION_JSON)
+        .perform(MockMvcRequestBuilders.put("/estudantes/1").contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(body)))
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isBadRequest())

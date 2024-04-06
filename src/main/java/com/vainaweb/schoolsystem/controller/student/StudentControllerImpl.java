@@ -1,5 +1,6 @@
 package com.vainaweb.schoolsystem.controller.student;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vainaweb.schoolsystem.dto.request.StudentRequest;
+import com.vainaweb.schoolsystem.dto.request.StudentUpdateRequest;
 import com.vainaweb.schoolsystem.dto.response.StudentResponse;
 import com.vainaweb.schoolsystem.service.student.StudentService;
 
@@ -41,6 +43,13 @@ class StudentControllerImpl implements StudentController {
   public ResponseEntity<Void> create(StudentRequest request) throws URISyntaxException {
     URI location = studentService.create(request);
     return ResponseEntity.created(location).build();
+  }
+
+  @Override
+  public ResponseEntity<Void> update(long id, StudentUpdateRequest collaboratorRequest, String ifMatch)
+      throws IOException {
+    String etag = studentService.update(id, collaboratorRequest, ifMatch);
+    return ResponseEntity.noContent().eTag(etag).build();
   }
   
 }

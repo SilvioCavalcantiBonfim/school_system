@@ -1,4 +1,4 @@
-package com.vainaweb.schoolsystem.controller.collaborator;
+package com.vainaweb.schoolsystem.integration.collaborator;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureMockMvc
 @DirtiesContext
-public class CollaboratorControllerFindAllTest {
+public class CollaboratorFindAllTest {
 
   @Autowired
   private MockMvc mockMvc;

@@ -39,7 +39,7 @@ class ETagServiceImpl implements ETagService {
     Optional.ofNullable(etag).ifPresent(tag -> {
       try {
         String dataEtag = generate(data);
-        LOGGER.info(dataEtag);
+        LOGGER.debug(dataEtag);
         if (!dataEtag.equals(tag)) {
           throw new ETagMismatchException();
         }

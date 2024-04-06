@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.vainaweb.schoolsystem.dto.request.StudentRequest;
+import com.vainaweb.schoolsystem.dto.request.StudentUpdateRequest;
 import com.vainaweb.schoolsystem.dto.response.StudentResponse;
 import com.vainaweb.schoolsystem.model.Course;
 import com.vainaweb.schoolsystem.model.Student;
@@ -46,5 +47,16 @@ public class StudentMapper implements Mapper<Student, StudentResponse, StudentRe
     Optional.ofNullable(request.course()).map(Course::of).ifPresent(student::course);
     
     return student.build();
+  }
+
+  public Student merge(Student entity, StudentUpdateRequest request) {
+    Optional.ofNullable(request.name()).ifPresent(entity::setName);
+    Optional.ofNullable(request.phone()).ifPresent(entity::setPhone);
+    Optional.ofNullable(request.course()).map(Course::of).ifPresent(entity::setCourse);
+    Optional.ofNullable(request.address())
+        .map(addr -> addressMapper.merge(entity.getAddress(), addr))
+        .ifPresent(entity::setAddress);
+
+    return entity;
   }
 }
