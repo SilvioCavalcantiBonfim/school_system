@@ -1,13 +1,11 @@
 package com.vainaweb.schoolsystem.component.mapper;
 
-import java.util.Objects;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.vainaweb.schoolsystem.dto.request.CollaboratorRequest;
 import com.vainaweb.schoolsystem.dto.request.CollaboratorUpdateRequest;
 import com.vainaweb.schoolsystem.dto.response.CollaboratorResponse;
-import com.vainaweb.schoolsystem.exception.IllegalRoleException;
 import com.vainaweb.schoolsystem.model.Collaborator;
 import com.vainaweb.schoolsystem.model.Role;
 import com.vainaweb.schoolsystem.model.Collaborator.CollaboratorBuilder;
@@ -42,13 +40,7 @@ public class CollaboratorMapper implements Mapper<Collaborator, CollaboratorResp
         .cpf(collaboratorRequest.cpf())
         .address(addressMapper.toEntity(collaboratorRequest.address()));
 
-    if (Objects.nonNull(collaboratorRequest.role())) {
-      try {
-        collaborator.role(Role.valueOf(collaboratorRequest.role().toUpperCase()));
-      } catch (Exception e) {
-        throw new IllegalRoleException();
-      }
-    }
+    Optional.ofNullable(collaboratorRequest.role()).map(Role::of).ifPresent(collaborator::role);
 
     return collaborator.build();
   }
@@ -56,15 +48,10 @@ public class CollaboratorMapper implements Mapper<Collaborator, CollaboratorResp
   public Collaborator merge(Collaborator entity, CollaboratorUpdateRequest request) {
     Optional.ofNullable(request.name()).ifPresent(entity::setName);
     Optional.ofNullable(request.email()).ifPresent(entity::setEmail);
-    Optional.ofNullable(request.role()).ifPresent(role -> {
-      try {
-        entity.setRole(Role.valueOf(role.toUpperCase()));
-      } catch (Exception e) {
-        throw new IllegalRoleException();
-      }
-    });
+    Optional.ofNullable(request.role()).map(Role::of).ifPresent(entity::setRole);
     Optional.ofNullable(request.address())
-        .ifPresent(addressRequest -> entity.setAddress(addressMapper.merge(entity.getAddress(), addressRequest)));
+        .map(addr -> addressMapper.merge(entity.getAddress(), addr))
+        .ifPresent(entity::setAddress);
 
     return entity;
   }

@@ -290,6 +290,41 @@ public class StudentControllerCreateTest {
                                 .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
         }
 
+        @Test
+        @DisplayName("Create Student with phone null")
+        public void createStudentWithPhoneNull() throws Exception {
+
+                body.put("phone", null);
+
+                mockMvc
+                                .perform(MockMvcRequestBuilders.post("/estudantes")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(objectMapper.writeValueAsString(body)))
+                                .andDo(MockMvcResultHandlers.print())
+                                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.message.phone").value("must not be null"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
+        }
+
+        @Test
+        @DisplayName("Create Student with phone invalid format")
+        public void createStudentWithPhoneInvalidFormat() throws Exception {
+
+                body.put("phone", "teste");
+
+                mockMvc
+                                .perform(MockMvcRequestBuilders.post("/estudantes")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(objectMapper.writeValueAsString(body)))
+                                .andDo(MockMvcResultHandlers.print())
+                                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.message.phone")
+                                                .value("must match (##) 9####-#### or (##) ####-####"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists());
+        }
+
         // --------------------------------- address ---------------------------------
         @Test
         @DisplayName("Create Student with address null")

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.vainaweb.schoolsystem.dto.request.AddressRequest;
 import com.vainaweb.schoolsystem.dto.response.AddressResponse;
-import com.vainaweb.schoolsystem.exception.IllegalStateStringException;
 import com.vainaweb.schoolsystem.model.Address;
 import com.vainaweb.schoolsystem.model.State;
 import com.vainaweb.schoolsystem.model.Address.AddressBuilder;
@@ -18,13 +17,13 @@ public class AddressMapper implements Mapper<Address, AddressResponse, AddressRe
   @Override
   public AddressResponse toResponse(Address address) {
     return AddressResponse.builder()
-      .zip(address.getZip())
-      .street(address.getStreet())
-      .number(address.getNumber())
-      .complement(address.getComplement())
-      .city(address.getCity())
-      .state(address.getState().toString())
-      .build();
+        .zip(address.getZip())
+        .street(address.getStreet())
+        .number(address.getNumber())
+        .complement(address.getComplement())
+        .city(address.getCity())
+        .state(address.getState().toString())
+        .build();
   }
 
   @Override
@@ -40,13 +39,8 @@ public class AddressMapper implements Mapper<Address, AddressResponse, AddressRe
         .street(request.street())
         .number(request.number());
 
-    if (Objects.nonNull(request.state())) {
-      try {
-        address.state(State.valueOf(request.state().toUpperCase()));
-      } catch (Exception e) {
-        throw new IllegalStateStringException();
-      }
-    }
+    Optional.ofNullable(request.state()).map(State::of).ifPresent(address::state);
+
     return address.build();
   }
 
@@ -56,13 +50,7 @@ public class AddressMapper implements Mapper<Address, AddressResponse, AddressRe
     Optional.ofNullable(request.city()).ifPresent(entity::setCity);
     Optional.ofNullable(request.number()).ifPresent(entity::setNumber);
     Optional.ofNullable(request.complement()).ifPresent(entity::setComplement);
-    Optional.ofNullable(request.state()).ifPresent(state -> {
-      try {
-        entity.setState(State.valueOf(state.toUpperCase()));
-      } catch (Exception e) {
-        throw new IllegalStateStringException();
-      }
-    });
+    Optional.ofNullable(request.state()).map(State::of).ifPresent(entity::setState);
 
     return entity;
   }

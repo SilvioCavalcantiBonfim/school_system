@@ -49,7 +49,8 @@ public class Student implements Serializable {
   @Column(unique = true, length = 14)
   private String cpf;
 
-  @Pattern(regexp = "^\\(\\d{2}\\) (9\\d{4}-\\d{4}|\\d{4}-\\d{4})$")
+  @NotNull
+  @Pattern(regexp = "^\\(\\d{2}\\) (9\\d{4}-\\d{4}|\\d{4}-\\d{4})$", message = "must match (##) 9####-#### or (##) ####-####")
   private String phone;
 
   @NotNull

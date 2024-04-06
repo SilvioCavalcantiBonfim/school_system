@@ -1,11 +1,11 @@
 package com.vainaweb.schoolsystem.component.mapper;
 
-import java.util.Objects;
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 
 import com.vainaweb.schoolsystem.dto.request.StudentRequest;
 import com.vainaweb.schoolsystem.dto.response.StudentResponse;
-import com.vainaweb.schoolsystem.exception.IllegalCourseException;
 import com.vainaweb.schoolsystem.model.Course;
 import com.vainaweb.schoolsystem.model.Student;
 import com.vainaweb.schoolsystem.model.Student.StudentBuilder;
@@ -42,13 +42,9 @@ public class StudentMapper implements Mapper<Student, StudentResponse, StudentRe
         .email(request.email())
         .phone(request.phone())
         .address(addressMapper.toEntity(request.address()));
-    if (Objects.nonNull(request.course())) {
-      try {
-        student.course(Course.valueOf(request.course().toUpperCase()));
-      } catch (Exception e) {
-        throw new IllegalCourseException();
-      }
-    }
+
+    Optional.ofNullable(request.course()).map(Course::of).ifPresent(student::course);
+    
     return student.build();
   }
 }

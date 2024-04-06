@@ -1,5 +1,7 @@
 package com.vainaweb.schoolsystem.model;
 
+import com.vainaweb.schoolsystem.exception.IllegalStateStringException;
+
 public enum State {
   AC, // Acre
   AL, // Alagoas
@@ -28,4 +30,12 @@ public enum State {
   SP, // São Paulo
   SE, // Sergipe
   TO;  // Tocantins
+
+  public static State of(String state){
+    try {
+      return State.valueOf(state.toUpperCase());
+    } catch (Exception e) {
+      throw new IllegalStateStringException();
+    }
+  }
 }
