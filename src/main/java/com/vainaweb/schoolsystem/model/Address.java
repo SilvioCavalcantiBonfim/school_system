@@ -25,22 +25,22 @@ import lombok.ToString;
 public class Address implements Serializable {
 
   @Pattern(regexp = "^\\d{5}-\\d{3}$", message = "must match #####-###")
-  @NotNull
+  @NotNull(message = "must not be null")
   @Column(length = 9)
   private String zip;
 
-  @NotBlank
+  @NotBlank(message = "must not be blank")
   private String street;
 
-  @NotNull
-  @PositiveOrZero
+  @NotNull(message = "must not be null")
+  @PositiveOrZero(message = "must be greater than or equal to 0")
   private Short number;
 
   private String complement;
 
-  @NotBlank
+  @NotBlank(message = "must not be blank")
   private String city;
 
-  @NotNull
+  @NotNull(message = "must not be null")
   private State state;
 }

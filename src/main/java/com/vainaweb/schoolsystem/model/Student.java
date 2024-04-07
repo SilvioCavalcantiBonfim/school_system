@@ -36,27 +36,27 @@ public class Student implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  @NotBlank
+  @NotBlank(message = "must not be blank")
   private String name;
 
-  @Email
-  @NotBlank
+  @Email(message = "must be a well-formed email address")
+  @NotBlank(message = "must not be blank")
   @Column(unique = true)
   private String email;
 
-  @NotNull
-  @CPF
+  @NotNull(message = "must not be null")
+  @CPF(message = "invalid Brazilian individual taxpayer registry number (CPF)")
   @Column(unique = true, length = 14)
   private String cpf;
 
-  @NotNull
+  @NotNull(message = "must not be null")
   @Pattern(regexp = "^\\(\\d{2}\\) (9\\d{4}-\\d{4}|\\d{4}-\\d{4})$", message = "must match (##) 9####-#### or (##) ####-####")
   private String phone;
 
-  @NotNull
+  @NotNull(message = "must not be null")
   private Course course;
 
   @Valid
-  @NotNull
+  @NotNull(message = "must not be null")
   private Address address;
 }
