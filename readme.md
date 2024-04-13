@@ -15,6 +15,26 @@ Bem-vindo ao repositório do projeto final do curso de Desenvolvimento Backend J
 - **DELETE /estudantes/:id**: Apaga um estudante específico.
 - **PUT /estudantes/:id**: Atualiza os dados de um estudante específico.
 
+## Variáveis de Ambiente
+
+As variáveis de ambiente necessárias para a configuração da API são:
+
+- **DB_HOST**: Host do banco de dados.
+- **DB_PORT**: Porta do banco de dados.
+- **DB_NAME**: Nome do banco de dados.
+- **DB_USER**: Usuário do banco de dados.
+- **DB_PASSWORD**: Senha do banco de dados.
+
+## Como Executar o Projeto
+Você pode executar a aplicação utilizando Docker Compose a partir da pasta raiz do projeto. Certifique-se de ter o **Docker** e o **Docker Compose** instalados em sua máquina.
+
+Para rodar o projeto, execute o seguinte comando na pasta raiz do projeto:
+
+```bash
+docker compose up
+```
+A imagem Docker da API está disponível no [Docker Hub](). Certifique-se de verificar o arquivo `docker-compose.yml` para as configurações corretas.
+
 ## Funcionalidades Adicionais
 
 ### Checksum com CRC32
