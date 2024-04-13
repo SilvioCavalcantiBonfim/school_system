@@ -33,7 +33,7 @@ Para rodar o projeto, execute o seguinte comando na pasta raiz do projeto:
 ```bash
 docker compose up
 ```
-A imagem Docker da API está disponível no [Docker Hub](). Certifique-se de verificar o arquivo `docker-compose.yml` para as configurações corretas.
+A imagem Docker da API está disponível no [Docker Hub](https://hub.docker.com/r/silviocavalcanti/schoolsystem). Certifique-se de verificar o arquivo `docker-compose.yml` para as configurações corretas.
 
 ## Funcionalidades Adicionais
 
